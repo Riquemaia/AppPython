@@ -7,6 +7,7 @@ import pandas as pd
 from atlassian import Confluence
 from src.telas import Tela_Jira
 from src.telas import Tela_Menu
+from src.telas import Tela_Gmud
 
 auth_token = "ATATT3xFfGF0INvqH51-oP835sHbbQRZfXwenQJ5uJk5_HwzYp6yz--yRiTw5Ked1Jq86tcoaGnvEw7o5pVnvpFiSNU2C2r1Zgo5_i9_8oBOP8AL4vH5G-TTKZCXjs4P1XBqKBXj8lhrggFBzARfAf3ZbKEFcskrnDTgzprig5lb9ZHNgach7w4=D9039919"
 
@@ -18,7 +19,7 @@ confluence = Confluence(
     cloud=True)
 
 
-window1, window2 = Tela_Menu.make_window(), None
+window1, window2, window3 = Tela_Menu.make_window(), None, None
 
 resp_db = False
 
@@ -27,9 +28,12 @@ while True:
     if window == window1:
         if event in (sg.WIN_CLOSED, 'Cancel'):
             break
-        if event == 'k_botao_arq':
+        if event == 'k_botao_menu_jira':
             window1.hide()
             window2 = Tela_Jira.make_window()
+        if event == 'k_botao_menu_gmud':
+            window1.hide()
+            window3 = Tela_Gmud.make_window()
 
     if window == window2:
         if event in (sg.WIN_CLOSED, 'Cancel'):
@@ -70,6 +74,12 @@ while True:
                     sg.popup_error('Ocorreu um erro ao criar a pagina!', title='Error')
             else:
                 sg.popup_error('Não autorizado!\nPreencha corretamente os campos anteriores.', title='Error')
+    if window == window3:
+        if event in (sg.WIN_CLOSED, 'Cancel'):
+            break
+        elif event == 'k_voltar_jira':
+            window3.close()
+            window1.un_hide()
 window.close()
 
 # # teste html
