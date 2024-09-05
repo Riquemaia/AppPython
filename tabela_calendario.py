@@ -75,3 +75,31 @@ resultado = spark.sql(query)
 # Exibindo o resultado final
 print("Resultado da consulta:")
 resultado.show(truncate=False)
+
+SELECT 
+    coluna_x,
+    coluna_y,
+    coluna_z,
+    CASE 
+        -- Quando coluna Y = 1 e coluna Z = 1, comparar apenas com "D1" e "10"
+        WHEN coluna_y = 1 AND coluna_z = 1 THEN 
+            CASE 
+                WHEN array_contains(split(coluna_x, ','), 'D1') 
+                OR array_contains(split(coluna_x, ','), '10') 
+                THEN 'OK'
+                ELSE 'NOK'
+            END
+
+        -- Quando coluna Y = 2 e coluna Z = 1, comparar apenas com "ALL" e "7"
+        WHEN coluna_y = 2 AND coluna_z = 1 THEN 
+            CASE 
+                WHEN array_contains(split(coluna_x, ','), 'ALL') 
+                OR array_contains(split(coluna_x, ','), '7') 
+                THEN 'OK'
+                ELSE 'NOK'
+            END
+        
+        -- Caso não caia em nenhuma condição, retornar "NOK"
+        ELSE 'NOK'
+    END AS resultado
+FROM tabela
